@@ -16,3 +16,68 @@ function hello_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route
       return '<p>' . t('This page provides a drag-and-drop interface for assigning a block to a region, and for controlling the order of blocks within regions. Since not all themes implement the same regions, or display regions in the same way, blocks are positioned on a per-theme basis. Remember that your changes will not be saved until you click the <em>Save blocks</em> button at the bottom of the page.') . '</p>';
   }
 }
+  function hello_cron() {
+    \Drupal::messenger()->addMessage(t( "hello run successfully"));
+    // Short-running operation example, not using a queue:
+    // Delete all expired records since the last cron run.
+    $expires = \Drupal::state()
+      ->get('hello.last_check', 0);
+    \Drupal::database()
+      ->delete('hello_table')
+      ->condition('expires', $expires, '>=')
+      ->execute();
+    \Drupal::state()
+      ->set('hello.last_check', REQUEST_TIME);
+
+    // Long-running operation example, leveraging a queue:
+    // Queue news feeds for updates once their refresh interval has elapsed.
+    $queue = \Drupal::queue('aggregator_feeds');
+    $ids = \Drupal::entityManager()
+      ->getStorage('aggregator_feed')
+      ->getFeedIdsToRefresh();
+    foreach (Feed::loadMultiple($ids) as $feed) {
+      if ($queue
+        ->createItem($feed)) {
+
+        // Add timestamp to avoid queueing item more than once.
+        $feed
+          ->setQueuedTime(REQUEST_TIME);
+        $feed
+          ->save();
+      }
+    }
+    $ids = \Drupal::entityQuery('aggregator_feed')
+      ->condition('queued', REQUEST_TIME - 3600 * 6, '<')
+      ->execute();
+    if ($ids) {
+      $feeds = Feed::loadMultiple($ids);
+      foreach ($feeds as $feed) {
+        $feed
+          ->setQueuedTime(0);
+        $feed
+          ->save();
+      }
+    }
+  }
+
+  function hello_user_login(\Drupal\user\UserInterface $account) {
+    \Drupal::messenger()->addMessage(t( 'Welcome %name',
+    ['%name' => $account->getAccountName()]
+    ));
+    $config = \Drupal::config('system.date');
+
+    // If the user has a NULL time zone, notify them to set a time zone.
+    if (!$account
+        ->getTimezone() && $config
+        ->get('timezone.user.configurable') && $config
+        ->get('timezone.user.warn')) {
+      drupal_set_message(t('Configure your <a href=":user-edit">account time zone setting</a>.', array(
+        ':user-edit' => $account
+          ->url('edit-form', array(
+            'query' => \Drupal::destination()
+              ->getAsArray(),
+            'fragment' => 'edit-timezone',
+          )),
+      )));
+    }
+  }
