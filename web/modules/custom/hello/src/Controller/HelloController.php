@@ -8,7 +8,7 @@
   class HelloController extends ControllerBase{
 
     public function content(){
-      
+
       $message = $this->t('you are on the Hello page. Your name is @username', [
         '@username' => $this->currentUser()->getAccountName(),
       ]);
