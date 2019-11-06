@@ -5,3 +5,22 @@ hello.hello:
     _controller: '\Drupal\hello\Controller\HelloController::content'
   requirements:
     _access: 'TRUE'
+
+hello.hello2:
+  path: '/hello/node-list/{nodetype}'
+  defaults:
+    _title: 'Node list'
+    _controller: '\Drupal\hello\Controller\HelloTwoController::content2'
+    nodetype: ''
+  requirements:
+    _access: 'TRUE'
+
+hello.user_statistics:
+  path: '/user/{user}/statistics'
+  defaults:
+    _title: 'User'
+    _controller: '\Drupal\hello\Controller\HelloTwoController::user_connection'
+  requirements:
+    _access: 'TRUE'
+
+

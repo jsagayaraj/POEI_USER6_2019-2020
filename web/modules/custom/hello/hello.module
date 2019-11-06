@@ -61,23 +61,53 @@ function hello_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route
   }
 
   function hello_user_login(\Drupal\user\UserInterface $account) {
-    \Drupal::messenger()->addMessage(t( 'Welcome %name',
-    ['%name' => $account->getAccountName()]
-    ));
-    $config = \Drupal::config('system.date');
+//    \Drupal::messenger()->addMessage(t( 'Welcome %name',
+//    ['%name' => $account->getAccountName()]
+//    ));
+//    $config = \Drupal::config('system.date');
+//
+//    // If the user has a NULL time zone, notify them to set a time zone.
+//    if (!$account
+//        ->getTimezone() && $config
+//        ->get('timezone.user.configurable') && $config
+//        ->get('timezone.user.warn')) {
+//      drupal_set_message(t('Configure your <a href=":user-edit">account time zone setting</a>.', array(
+//        ':user-edit' => $account
+//          ->url('edit-form', array(
+//            'query' => \Drupal::destination()
+//              ->getAsArray(),
+//            'fragment' => 'edit-timezone',
+//          )),
+//      )));
+//    }
 
-    // If the user has a NULL time zone, notify them to set a time zone.
-    if (!$account
-        ->getTimezone() && $config
-        ->get('timezone.user.configurable') && $config
-        ->get('timezone.user.warn')) {
-      drupal_set_message(t('Configure your <a href=":user-edit">account time zone setting</a>.', array(
-        ':user-edit' => $account
-          ->url('edit-form', array(
-            'query' => \Drupal::destination()
-              ->getAsArray(),
-            'fragment' => 'edit-timezone',
-          )),
-      )));
-    }
+
+    \Drupal::messenger()->addMessage(t( 'Data insterted'));
+    // Insert the record to table.
+    \Drupal::database()->insert('hello_user_statistics')
+      ->fields([
+        'uid' => $account->id(),
+        'action' => '1',
+        'time' => REQUEST_TIME,
+      ])
+
+      ->execute();
+  }
+
+  function hello_user_logout(\Drupal\Core\Session\AccountProxyInterface $account) {
+
+    \Drupal::messenger()->addMessage(t( 'You are signed out'));
+    // Insert the record to table.
+    \Drupal::database()->insert('hello_user_statistics')
+      ->fields([
+        'uid' => $account->id(),
+        'action' => '0',
+        'time' => REQUEST_TIME,
+      ])
+
+      ->execute();
+  }
+
+  function hello_user_delete(\Drupal\user\UserInterface $user) {
+    \Drupal::database()->delete('hello_user_statistics')->condition('uid',  $user->id())->execute();
   }
