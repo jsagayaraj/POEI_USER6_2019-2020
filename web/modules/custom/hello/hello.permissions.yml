@@ -1,0 +1,8 @@
+access hello:
+  title: 'Access Hello'
+  description: 'Allow user to access user connection'
+  #restrict access: true
+
+administer hello:
+  title: 'Administer Hello'
+  #restrict access: true

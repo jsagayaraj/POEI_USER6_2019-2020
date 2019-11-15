@@ -1,6 +1,7 @@
 <?php
 
-
+  use Drupal\Core\Form\FormBase;
+  use Drupal\Core\Form\FormStateInterface;
 
 function hello_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
   switch ($route_name) {
@@ -60,54 +61,135 @@ function hello_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route
     }
   }
 
+  /**
+   * Implements hook_corn().
+   * 
+   */
+function hello_corn(){
+  $purge_days_number = \Drupal::config('hello.settings')->get('purge_days_number');
+  if($purge_days_number != '0'){
+    \Drupal::database()->delete('hello_user_statistics')
+      ->condition('time', REQUEST_TIME - $purge_days_number * (24 * 3600), '<')
+      ->execute();
+  }
+}
+
+/**
+ * Implements hook_user_login()
+ * 
+ */
+
   function hello_user_login(\Drupal\user\UserInterface $account) {
-//    \Drupal::messenger()->addMessage(t( 'Welcome %name',
-//    ['%name' => $account->getAccountName()]
-//    ));
-//    $config = \Drupal::config('system.date');
-//
-//    // If the user has a NULL time zone, notify them to set a time zone.
-//    if (!$account
-//        ->getTimezone() && $config
-//        ->get('timezone.user.configurable') && $config
-//        ->get('timezone.user.warn')) {
-//      drupal_set_message(t('Configure your <a href=":user-edit">account time zone setting</a>.', array(
-//        ':user-edit' => $account
-//          ->url('edit-form', array(
-//            'query' => \Drupal::destination()
-//              ->getAsArray(),
-//            'fragment' => 'edit-timezone',
-//          )),
-//      )));
-//    }
 
 
     \Drupal::messenger()->addMessage(t( 'Data insterted'));
-    // Insert the record to table.
-    \Drupal::database()->insert('hello_user_statistics')
-      ->fields([
-        'uid' => $account->id(),
-        'action' => '1',
-        'time' => REQUEST_TIME,
-      ])
 
-      ->execute();
+    //getting roles user
+    $roles = \Drupal::config('hello.settings')->get('user_statistics_roles');
+
+    //getting user roles
+    $user_roles = $account->getroles();
+
+    //comparer 2 tableau array_intersect is the php function which compare two array tabels
+    $diff = array_intersect($roles, $user_roles);
+
+    if(count($diff) > 0){
+      // Insert the record to table.
+      \Drupal::database()->insert('hello_user_statistics')
+        ->fields([
+          'uid' => $account->id(),
+          'action' => '1',
+          'time' => REQUEST_TIME,
+        ])
+
+        ->execute();
+    }
+
+
   }
 
   function hello_user_logout(\Drupal\Core\Session\AccountProxyInterface $account) {
 
     \Drupal::messenger()->addMessage(t( 'You are signed out'));
     // Insert the record to table.
-    \Drupal::database()->insert('hello_user_statistics')
-      ->fields([
-        'uid' => $account->id(),
-        'action' => '0',
-        'time' => REQUEST_TIME,
-      ])
 
-      ->execute();
+    //getting roles user
+    $roles = \Drupal::config('hello.settings')->get('user_statistics_roles');
+
+    //getting user roles
+    $user_roles = $account->getroles();
+
+    //comparer 2 tableau array_intersect is the php function which compare two array tabels
+    $diff = array_intersect($roles, $user_roles);
+
+    if(count($diff) > 0) {
+      \Drupal::database()->insert('hello_user_statistics')
+        ->fields([
+          'uid' => $account->id(),
+          'action' => '0',
+          'time' => REQUEST_TIME,
+        ])
+        ->execute();
+    }
   }
 
   function hello_user_delete(\Drupal\user\UserInterface $user) {
     \Drupal::database()->delete('hello_user_statistics')->condition('uid',  $user->id())->execute();
+  }
+
+  /***
+   * @param $existing
+   * @param $type
+   * @param $theme
+   * @param $path
+   *
+   * @return array
+   * hook_theme()
+   */
+
+
+  function hello_theme($existing, $type, $theme, $path){
+    return array(
+      'hello_module' => array(
+        'template' => 'hello-module',
+        'variables' => array('user' => NULL, 'count'=> NULL),
+      ),
+    );
+
+  }
+
+
+  function hello_form_user_admin_settings_alter(array &$form, FormStateInterface $form_state){
+
+    //ksm($form);
+    $roles = \Drupal::entityTypeManager()->getStorage('user_role')->loadMultiple();
+    unset($roles['anonymous']);
+    //ksm($roles);
+
+    $options = [];
+    foreach ($roles as $role){
+      $options[$role->id()] = $role->label();
+    }
+    $form['user_statistics'] = [
+      '#type' => 'details',
+      '#title' => t('Choose roles to track'),
+      '#open' => TRUE,
+      '#weight' => -1,
+    ];
+
+    $form['user_statistics'] ['options']= [
+      '#type' => 'checkboxes',
+      '#options' => $options,
+      '#default_value' => \Drupal::config('hello.settings')->get('user_statistics_roles'),
+    ];
+
+
+    $form['#submit'][] = 'hello_user_admin_settings_form_submit';
+    //ksm($form);
+
+  }
+
+  function hello_user_admin_settings_form_submit(array &$form, FormStateInterface $form_state){
+    $options = $form_state->getValue('options');
+    \Drupal::configFactory()->getEditable('hello.settings')->set('user_statistics_roles', $options)->save();
   }

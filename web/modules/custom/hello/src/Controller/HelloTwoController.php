@@ -85,12 +85,15 @@
     //ksm($result);
 
     $rows = [];
+    $connexions = 0;
+    $user = $this->t($this->currentUser()->getAccountName());
     foreach($result as $record){
       //print_r($record);
       $rows[] = [
         $record->action == '1' ? $this->t('Login'): $this->t('Logout'),
         \Drupal::service('date.formatter')->format($record->time),
       ];
+      $connexions += $record->action;
     }
 
     $table = [
@@ -101,8 +104,26 @@
       ];
 
 
-    return[$table];
-  }
+    //return[$table];
+
+      $output_message = array(
+        '#theme' => 'hello_module',
+        '#user' => $user,
+        '#count' => $connexions,
+
+        //"#data" => 'The User ' .$user . ' connect ' .$connexions. ' times',
+      );
+
+      return [
+        $output_message,
+        $table,
+        '#cache' => [
+          'max-age' => '0',
+        ],
+      ];
+    }
+
+
 
 
 

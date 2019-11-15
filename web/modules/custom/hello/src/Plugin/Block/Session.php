@@ -2,7 +2,10 @@
 
 namespace Drupal\hello\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\node\Plugin\views\filter\Access;
 
 /**
  * Provides a session block
@@ -33,6 +36,9 @@ class Session extends BlockBase {
 
         
     }
+    protected function blockAccess(AccountInterface $account) {
+      return AccessResult::allowedIfHasPermission($account, 'access hello');
+    }
 
-    
+
 }

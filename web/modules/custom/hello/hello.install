@@ -41,9 +41,17 @@ function hello_schema(){
   return $schema;
 }
 
-  /**
-   * Adds an 'action' field to the hello_user_statistics table
-   */
+/**
+ * Implements hook_uninstall().
+ */
+function hello_uninstall()
+{
+  \Drupal::state()->delete('hello_user_statistics');
+}
+
+/**
+ * Adds an 'action' field to the hello_user_statistics table
+ */
 function hello_update_8100(){
   $field_spec = [
     'type' => 'int',

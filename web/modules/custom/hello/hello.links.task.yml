@@ -14,4 +14,10 @@ hello.user_statistics:
   title: Cennection!
   route_name : hello.user_statistics
   base_route: entity.user.canonical
+  weight: 3
+
+hello.calculator:
+  title: Calculator!
+  route_name : hello.calculator
+  base_route: hello.hello
   weight: 5

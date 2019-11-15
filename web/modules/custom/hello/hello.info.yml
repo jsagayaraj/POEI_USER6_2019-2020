@@ -1,7 +1,6 @@
 name: Hello
 description: Training for module develepment.
 package: Training
-
 type: module
 # core: 8.x
 
@@ -9,6 +8,7 @@ type: module
 
 core: '8.x'
 version: '8.2.1'
+configure: hello.admin_form
 
 project: 'Training'
 datestamp: 1558552277
