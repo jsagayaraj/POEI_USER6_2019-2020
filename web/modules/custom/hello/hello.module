@@ -95,8 +95,8 @@ function hello_corn(){
 
     if(count($diff) > 0){
       // Insert the record to table.
-      \Drupal::database()->insert('hello_user_statistics')
-        ->fields([
+      \Drupal::database()->insert('hello_user_statistics')->fields(
+        [
           'uid' => $account->id(),
           'action' => '1',
           'time' => REQUEST_TIME,
