@@ -1,0 +1,38 @@
+<?php
+
+use Drupal\node\NodeInterface;
+
+function email_form_mail($key, &$message, $params)
+{
+    switch ($key)
+    {
+        case 'node_mail':
+            $message['from'] = 'hello@gmail.com';
+            $message['subject'] = t('Node update');
+            $message['body'][] = t('test');
+        break;
+    }
+}
+
+
+// whenever i changed the artical
+
+function email_form_node_update(NodeInterface $node)
+{
+    
+    $emails = \Drupal::database()->select('email_form_node_subscriber', 'efns')
+            ->fields('efns', ['email'])
+            ->condition('nid', $node->id())
+            ->execute();
+    
+    $mail_manager = \Drupal::service('plugin.manager.mail');
+
+    foreach($emails as $email)
+    {
+        //ksm($email);
+        //$mailManager->mail($module, $key, $to, $langcode, $params, $reply, $send);
+        $mail_manager->mail('email_form', 'node_mail', $email->email, 'en', [], NULL, TRUE);
+        
+    }
+    drupal_set_message('Email has been send' );
+}
