@@ -41,10 +41,8 @@ class EmailForm extends ReusableFormBase {
     \Drupal::database()->insert('email_form_node_subscriber')->fields([
       'nid' => $node->id(),
       'email' => $form_state->getValue('email'),
-    ]
-  
-  )
-  ->execute();
+    ])
+      ->execute();
 
     
   }

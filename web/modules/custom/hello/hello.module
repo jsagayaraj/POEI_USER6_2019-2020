@@ -159,6 +159,19 @@ function hello_corn(){
   }
 
 
+  //Hook form alter
+ 
+  function hello_form_alter(array &$form, FormStateInterface $form_state, $form_id ){
+    //ksm($form_id);
+    if($form_id == "node_article_form")
+    {
+      ksm($form);
+      $form['revision_log']['#access'] = false;
+
+    }
+
+  }
+
   function hello_form_user_admin_settings_alter(array &$form, FormStateInterface $form_state){
 
     //ksm($form);

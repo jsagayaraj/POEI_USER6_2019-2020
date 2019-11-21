@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fb806366f29f25b573eed6ef7b84634",
+    "content-hash": "2cc0d55549324b7ddba6c5845410f6af",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -1153,6 +1153,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -2057,6 +2058,69 @@
                 "docs": "https://drupal-bootstrap.org",
                 "issues": "https://www.drupal.org/project/issues/bootstrap",
                 "irc": "irc://irc.freenode.org/drupal-bootstrap"
+            }
+        },
+        {
+            "name": "drupal/cheeseburger_menu",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/cheeseburger_menu.git",
+                "reference": "8.x-4.02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cheeseburger_menu-8.x-4.02.zip",
+                "reference": "8.x-4.02",
+                "shasum": "65b3512de43857e3698c48a2c92da94a64b4c961"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-4.02",
+                    "datestamp": "1560862091",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "DavorHorvacki",
+                    "homepage": "https://www.drupal.org/user/3566953"
+                },
+                {
+                    "name": "aleksandar.boros.gyevi",
+                    "homepage": "https://www.drupal.org/user/316083"
+                },
+                {
+                    "name": "gnikolovski",
+                    "homepage": "https://www.drupal.org/user/3451979"
+                },
+                {
+                    "name": "malatenszki",
+                    "homepage": "https://www.drupal.org/user/3452551"
+                },
+                {
+                    "name": "vladanvukmanov",
+                    "homepage": "https://www.drupal.org/user/3524751"
+                }
+            ],
+            "description": "Navigation and language block for mobiles",
+            "homepage": "https://www.drupal.org/project/cheeseburger_menu",
+            "support": {
+                "source": "https://git.drupalcode.org/project/cheeseburger_menu"
             }
         },
         {
