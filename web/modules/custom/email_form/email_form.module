@@ -15,18 +15,20 @@ function email_form_mail($key, &$message, $params)
 }
 
 
-// whenever i changed the artical
+// whenever i update the artical i want to send a mail to the user who has subscibed
 
 function email_form_node_update(NodeInterface $node)
 {
-    
+    // get the email which is equal to node id (artical)
     $emails = \Drupal::database()->select('email_form_node_subscriber', 'efns')
             ->fields('efns', ['email'])
             ->condition('nid', $node->id())
             ->execute();
     
+    // call mais service
     $mail_manager = \Drupal::service('plugin.manager.mail');
 
+    //loop through the result
     foreach($emails as $email)
     {
         //ksm($email);
@@ -34,5 +36,6 @@ function email_form_node_update(NodeInterface $node)
         $mail_manager->mail('email_form', 'node_mail', $email->email, 'en', [], NULL, TRUE);
         
     }
-    drupal_set_message('Email has been send' );
+    // set send message
+    drupal_set_message('Email has been send to '.$email->email );
 }
