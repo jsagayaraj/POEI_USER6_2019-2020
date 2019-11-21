@@ -1,0 +1,19 @@
+uuid: ac365b71-f9e1-4a50-beb4-29328260c329
+langcode: en
+status: false
+dependencies: {  }
+id: dev
+label: DEV
+description: ''
+folder: ../config/dev
+module:
+  devel: 0
+  devel_generate: 0
+  kint: 0
+  webprofiler: 0
+theme: {  }
+blacklist: {  }
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 0
