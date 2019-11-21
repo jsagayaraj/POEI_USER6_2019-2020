@@ -1,0 +1,23 @@
+uuid: 02c2dc51-2b36-4fdc-8c22-49b5b42b72e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_lab
+    - node.type.article
+id: node.article.field_lab
+field_name: field_lab
+entity_type: node
+bundle: article
+label: lab
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: gaz
+  off_label: hgh
+field_type: boolean

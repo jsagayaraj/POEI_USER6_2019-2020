@@ -1,0 +1,24 @@
+uuid: 6cd54019-a977-46b0-9e56-9a4ce6367ceb
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - reusable_forms
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  reusable_forms:
+    enabled: 1
+    plugin: email_form
+_core:
+  default_config_hash: AeW1SEDgb1OTQACAWGhzvMknMYAJlcZu0jljfeU3oso
+name: Article
+type: article
+description: 'Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: true

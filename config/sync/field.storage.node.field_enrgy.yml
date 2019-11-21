@@ -1,0 +1,18 @@
+uuid: f514eef3-d8a2-4352-8898-a69a674a029e
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_enrgy
+field_name: field_enrgy
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,14 @@
+uuid: 6a1df157-f540-495a-9f0b-d9d934f24dde
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: vymHlgJy26BuI5GGj9-IXjwR3dRC5C0tij4BpWJnoqw
+id: feedback
+label: 'Website feedback'
+recipients:
+  - bjsahay@gmail.com
+reply: ''
+weight: 0
+message: 'Your message has been sent.'
+redirect: ''
