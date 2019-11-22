@@ -13,7 +13,7 @@ drush cr
 drush updb -y
 
 # Exporte les config de prod
-drush cex -prod -y
+drush csex -prod -y
 
 
 #Import le config
