@@ -19,7 +19,7 @@ settings:
   id: system_branding_block
   label: 'Site branding'
   provider: system
-  label_display: visible
+  label_display: '0'
   use_site_logo: true
   use_site_name: true
   use_site_slogan: true
