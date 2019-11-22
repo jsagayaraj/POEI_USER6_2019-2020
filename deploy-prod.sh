@@ -4,7 +4,7 @@
 git pull origin master
 
 #Récuperer les librairies
-composer install --dev
+composer install --no-dev
 
 # vide le cache
 drush cr
